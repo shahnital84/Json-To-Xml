@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>JSON XML CONVERSION TOOL</title>
+	<meta charset="utf-8">
+	<!-- //ADD ON LIBRARY - BOOTSTRAP , CSS -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</head>
+<body>
+	<div class="container"> <!-- CONTAINER CLASS -->
+		<div class="jumbotron"> <!-- jumbotron - a big box - a grey box with rounded corners to display special content or information. -->
+			<h1 class="display-4">JSON XML CONVERSION TOOL</h1>
+			<p class="lead">Input JSON data. When you click on CONVERT button data should be displayed in XML format.</p>
+			<hr class="my-4">
+		</div>
+		<form id="jsonForm"> <!-- NEW JSON FORM -->			
+			<div class="form-group">
+				<label for="jsonTextarea">Input JSON Data</label><!-- INPUT TEXTBOX - JSON DATA - multiline text area -->
+				<textarea class="form-control" id="jsonTextarea" rows="25"></textarea>
+			</div>
+			<button type="submit" class="btn btn-primary">CONVERT TO XML</button> <!-- CONVERT BUTTON ON FORM TYPE SUBMIT -->
+			<div class="form-group">
+				<label for="xmlDisplay">XML Data</label><!-- //TEXTBOX TO DISPLAY XML DATA - JSON TO XML - multiline text area -->
+				<textarea class="form-control" id="xmlDisplay" rows="5" disabled="true"></textarea>
+			</div>
+		</form>
+	</div>
+</body>
+<script type="text/javascript">
+	$('#jsonTextarea').val('{\n\t"id":7,\n\t"first_name":"James",\n\t"last_name":"Bond",\n\t"age":"25",\n\t"address":\n\t[\n\t\t{\n\t\t\t"type":"primary",\n\t\t\t"unit":7,\n\t\t\t"street":"Teston St.",\n\t\t\t"city":"Toronto",\n\t\t\t"country":"Canada",\n\t\t\t"postal_code":"L6YU9O"\n\t\t},{\n\t\t\t"type":"secondary",\n\t\t\t"unit":9,\n\t\t\t"street":"Ferndale Drive",\n\t\t\t"city":"Barrie",\n\t\t\t"country":"Canada",\n\t\t\t"postal_code":"L6fI9h"\n\t\t}\n\t]\n}');
+	// Jquery/javascript on form submit event will check whether input data in valid json
+	$('#jsonForm').submit(function(e){
+		e.preventDefault();
+		// alert($('#jsonTextarea').val());
+		// NEW JSON DATA
+		var data = $('#jsonTextarea').val();
+		try {
+			var jsonData = $.parseJSON(data);
+			// alert('valid json');
+			// FUNCTION CALL JSONTOXML
+			$('#xmlDisplay').val('<xml>'+jsonToXml(jsonData)+"</xml>");
+		}catch (err) {
+			alert('Invalid json' + err);
+		}
+	});
+	
+	// JSON TO XML
+	function jsonToXml(data){
+		var xml = "";
+		// CHECK FOR ATTRIBUTES
+		for (var key in data) {
+			// CHECK FOR CHILD ATTRIBUTES
+			if(typeof data[key] != 'object'){
+				xml += "<"+key+">"+data[key]+"</"+key+">";
+			}else{
+				//CHECK IF ARRAY OR OTHER JSON
+				if(isNaN(key)){
+					xml += "<"+key+">"+jsonToXml(data[key])+"</"+key+">";
+				}else{
+					xml += jsonToXml(data[key]); 
+				}
+			}
+		}
+		return xml;
+	}
+</script>
+</html>
