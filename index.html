@@ -42,7 +42,6 @@
 	$("#copyXML").click(function(){
 		$("#xmlDisplay").select();
 		document.execCommand('copy');
-		$("#message").focus();
 	});
 	$('#jsonTextarea').val('{\n\t"id":7,\n\t"first_name":"James",\n\t"last_name":"Bond",\n\t"age":"25",\n\t"address":\n\t[\n\t\t{\n\t\t\t"type":"primary",\n\t\t\t"unit":7,\n\t\t\t"street":"Teston St.",\n\t\t\t"city":"Toronto",\n\t\t\t"country":"Canada",\n\t\t\t"postal_code":"L6YU9O"\n\t\t},{\n\t\t\t"type":"secondary",\n\t\t\t"unit":9,\n\t\t\t"street":"Ferndale Drive",\n\t\t\t"city":"Barrie",\n\t\t\t"country":"Canada",\n\t\t\t"postal_code":"L6fI9h"\n\t\t}\n\t]\n}');
 	// Jquery/javascript on form submit event will check whether input data in valid json
